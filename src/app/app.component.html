@@ -1,0 +1,82 @@
+<!-- Header -->
+<header style="display: flex; align-items: center; padding: 10px 20px; background-color: #fc00bd; color: white;">
+  <button pButton type="button" icon="pi pi-home" style="margin-right: 12px;"></button>
+  <h3 style="margin: 0;">จัดการข้อมูลหน่วยงาน</h3>
+</header>
+
+<!-- Main Content -->
+<main style="padding: 20px;">
+  <h3>จัดการข้อมูลหน่วยงาน</h3>
+
+  <!-- ค้นหาข้อมูล -->
+  <div>
+    <h4>ค้นหาข้อมูล</h4>
+    <div style="display: flex; gap: 24px; margin-bottom: 18px;">
+      <div style="flex: 1;">
+        <span>รหัสหน่วยงาน / รหัสศูนย์ต้นทุน</span>
+        <input type="text" pInputText placeholder="กรุณากรอกข้อมูล" [(ngModel)]="searchCode" />
+      </div>
+      <div style="flex: 1;">
+        <span>ชื่อหน่วยงาน</span>
+        <input type="text" pInputText placeholder="กรุณากรอกข้อมูล" [(ngModel)]="searchName" />
+      </div>
+    </div>
+    <div style="display: flex; gap: 14px; margin-bottom: 10px;">
+      <button pButton type="button" label="ค้นหา" icon="pi pi-search" (click)="onSearch()"></button>
+      <button pButton type="button" label="ล้าง" icon="pi pi-refresh" (click)="onClear()"></button>
+    </div>
+    <p *ngIf="result">ผลลัพธ์: {{ result }}</p>
+  </div>
+
+  <!-- เพิ่มข้อมูล -->
+ 
+
+  <div style="margin-top: 24px;">
+    <h4>{{ currentId ? 'แก้ไขข้อมูล' : 'เพิ่มข้อมูลใหม่' }}</h4>
+    <div style="display: flex; gap: 24px; margin-bottom: 10px;">
+      <div style="flex: 1;">
+        <input type="text" pInputText placeholder="ชื่อหน่วยงาน" [(ngModel)]="newName" />
+      </div>
+      <div style="flex: 1;">
+        <input type="text" pInputText placeholder="รหัสศูนย์ต้นทุน" [(ngModel)]="newCode" />
+      </div>
+      <div style="flex: 1;">
+        <input type="text" pInputText placeholder="ระดับ" [(ngModel)]="newTier" />
+      </div>
+      <button pButton type="button" [label]="currentId ? 'อัปเดต' : 'เพิ่มข้อมูล'" (click)="onAddOrUpdate()"></button>
+    </div>
+  </div>
+
+  <!-- ตารางข้อมูล -->
+  <p style="font-weight: 600; color: #6366f1; margin-top: 32px;">รายชื่อข้อมูล</p>
+  <table *ngIf="agencies.length > 0" class="data-table" style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th style="border: 1px solid #ddd; padding: 8px;">ลำดับ</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">ชื่อหน่วยงาน</th>
+         
+        <th style="border: 1px solid #ddd; padding: 8px;">รหัสศูนย์ต้นทุน</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">ระดับ</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">การจัดการ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let agency of agencies; let i = index">
+        <td style="border: 1px solid #ddd; padding: 8px;">{{ i + 1 }}</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">{{ agency.name }}</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">{{ agency.code }}</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">{{ agency.tier }}</td>
+
+        <td style="border: 1px solid #ddd; padding: 8px;">
+          <button pButton icon="pi pi-pencil" class="p-button-text" (click)="onEdit(agency)"></button>
+          <button pButton icon="pi pi-trash" class="p-button-text p-button-danger" (click)="onDelete(agency.id)"></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</main>
+
+<!-- Footer -->
+<footer style="background-color:#ffffff; color:#a8a8a8; text-align:center; padding: 15px; margin-top: 40px;">
+  © 2025 My Company. All rights reserved.
+</footer>
