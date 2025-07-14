@@ -32,5 +32,5 @@ export class AgencyService {
 search(keyword: string) {
   return this.http.get(`${this.apiUrl}/search`, { params: { keyword } });
 }
-
+     
 }
