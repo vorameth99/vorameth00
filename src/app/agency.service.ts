@@ -25,7 +25,7 @@ export class AgencyService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
- getAll() {
+ getAll() {    
   return this.http.get(`${this.apiUrl}`);
 }
 
