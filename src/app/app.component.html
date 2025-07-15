@@ -1,6 +1,12 @@
 <!-- Header -->
 <header style="display: flex; align-items: center; padding: 10px 20px; background-color: #fc00bd; color: white;">
-  <button pButton type="button" icon="pi pi-home" style="margin-right: 12px;"></button>
+  <button
+    pButton
+    type="button"
+    icon="pi pi-home"
+    style="margin-right: 12px;"
+    (click)="refreshPage()"
+  ></button>
   <h3 style="margin: 0;">จัดการข้อมูลหน่วยงาน</h3>
 </header>
 
@@ -13,12 +19,22 @@
     <h4>ค้นหาข้อมูล</h4>
     <div style="display: flex; gap: 24px; margin-bottom: 18px;">
       <div style="flex: 1;">
+        <span>ชื่อหน่วยงาน</span>
+        <input type="text" pInputText placeholder="กรุณากรอกข้อมูล" [(ngModel)]="searchName" />
+      </div>
+      <div style="flex: 1;">
         <span>รหัสหน่วยงาน / รหัสศูนย์ต้นทุน</span>
         <input type="text" pInputText placeholder="กรุณากรอกข้อมูล" [(ngModel)]="searchCode" />
       </div>
       <div style="flex: 1;">
-        <span>ชื่อหน่วยงาน</span>
-        <input type="text" pInputText placeholder="กรุณากรอกข้อมูล" [(ngModel)]="searchName" />
+        <p-dropdown
+          [options]="tierOptions"
+          [(ngModel)]="searchTier"
+          placeholder="เลือกระดับ"
+          optionLabel="label"
+          optionValue="value"
+          styleClass="w-full"
+        ></p-dropdown>
       </div>
     </div>
     <div style="display: flex; gap: 14px; margin-bottom: 10px;">
@@ -29,8 +45,6 @@
   </div>
 
   <!-- เพิ่มข้อมูล -->
- 
-
   <div style="margin-top: 24px;">
     <h4>{{ currentId ? 'แก้ไขข้อมูล' : 'เพิ่มข้อมูลใหม่' }}</h4>
     <div style="display: flex; gap: 24px; margin-bottom: 10px;">
@@ -41,20 +55,36 @@
         <input type="text" pInputText placeholder="รหัสศูนย์ต้นทุน" [(ngModel)]="newCode" />
       </div>
       <div style="flex: 1;">
-        <input type="text" pInputText placeholder="ระดับ" [(ngModel)]="newTier" />
+        <p-dropdown
+          [options]="tierOptions"
+          [(ngModel)]="newTier"
+          placeholder="เลือกระดับ"
+          optionLabel="label"
+          optionValue="value"
+          styleClass="w-full"
+        ></p-dropdown>
       </div>
       <button pButton type="button" [label]="currentId ? 'อัปเดต' : 'เพิ่มข้อมูล'" (click)="onAddOrUpdate()"></button>
     </div>
   </div>
 
   <!-- ตารางข้อมูล -->
-  <p style="font-weight: 600; color: #6366f1; margin-top: 32px;">รายชื่อข้อมูล</p>
-  <table *ngIf="agencies.length > 0" class="data-table" style="width: 100%; border-collapse: collapse;">
+  <div *ngIf="agencies.length > 0" style="display: flex; justify-content: space-between; align-items: center; margin-top: 32px;">
+    <p style="font-weight: 600; color: #6366f1; margin: 0;">รายชื่อข้อมูล</p>
+    <button
+      pButton
+      icon="pi pi-file-excel"
+      label="Export Excel"
+      class="p-button-success"
+      (click)="exportExcel()">
+    </button>
+  </div>
+
+  <table #exportTable *ngIf="agencies.length > 0" class="data-table" style="width: 100%; border-collapse: collapse; margin-top: 12px;">
     <thead>
       <tr>
         <th style="border: 1px solid #ddd; padding: 8px;">ลำดับ</th>
         <th style="border: 1px solid #ddd; padding: 8px;">ชื่อหน่วยงาน</th>
-         
         <th style="border: 1px solid #ddd; padding: 8px;">รหัสศูนย์ต้นทุน</th>
         <th style="border: 1px solid #ddd; padding: 8px;">ระดับ</th>
         <th style="border: 1px solid #ddd; padding: 8px;">การจัดการ</th>
@@ -66,7 +96,6 @@
         <td style="border: 1px solid #ddd; padding: 8px;">{{ agency.name }}</td>
         <td style="border: 1px solid #ddd; padding: 8px;">{{ agency.code }}</td>
         <td style="border: 1px solid #ddd; padding: 8px;">{{ agency.tier }}</td>
-
         <td style="border: 1px solid #ddd; padding: 8px;">
           <button pButton icon="pi pi-pencil" class="p-button-text" (click)="onEdit(agency)"></button>
           <button pButton icon="pi pi-trash" class="p-button-text p-button-danger" (click)="onDelete(agency.id)"></button>
